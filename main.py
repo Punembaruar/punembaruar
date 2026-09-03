@@ -21,6 +21,13 @@ engine = create_engine(DB_URL, connect_args={"check_same_thread": False} if DB_U
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 Base = declarative_base()
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 professional_categories = Table(
     'professional_categories', Base.metadata,
     Column('professional_id', ForeignKey('professionals.id'), primary_key=True),
