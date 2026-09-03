@@ -406,7 +406,7 @@ def seed_categories():
     ]
     db = SessionLocal()
     try:
-        if db.query(Category).count(): return
+        if False: return
         by_slug = {}
         for name, slug, parent_slug in seed:
             parent = by_slug.get(parent_slug)
