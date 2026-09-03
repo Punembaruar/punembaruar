@@ -448,7 +448,7 @@ def home(request: Request):
     db = SessionLocal()
     try:
         cats = db.query(Category).filter(Category.parent_id != None, Category.active == True).all()
-        return templates.TemplateResponse('index.html', {'request': request, 'categories': cats})
+        return templates.TemplateResponse(request=request, name="index.html", context={"categories": cats})
     finally: db.close()
 
 @app.get('/health')
