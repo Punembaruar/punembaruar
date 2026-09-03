@@ -406,24 +406,25 @@ def seed_categories():
     ]
     db = SessionLocal()
     try:
-       by_slug = {c.slug: c for c in db.query(Category).all()}
+        by_slug = {c.slug: c for c in db.query(Category).all()}
 
-for name, slug, parent_slug in seed:
-    if slug in by_slug:
-        continue
+        for name, slug, parent_slug in seed:
+            if slug in by_slug:
+                continue
 
-    parent = by_slug.get(parent_slug) if parent_slug else None
-    c = Category(
-        name=name,
-        slug=slug,
-        parent_id=parent.id if parent else None
-    )
-    db.add(c)
-    db.flush()
-    by_slug[slug] = c
+            parent = by_slug.get(parent_slug) if parent_slug else None
+            c = Category(
+                name=name,
+                slug=slug,
+                parent_id=parent.id if parent else None
+            )
+            db.add(c)
+            db.flush()
+            by_slug[slug] = c
 
-db.commit()
-    finally: db.close()
+        db.commit()
+    finally:
+        db.close()
 seed_categories()
 
 
