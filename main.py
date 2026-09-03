@@ -28,6 +28,19 @@ def get_db():
     finally:
         db.close()
 
+def admin_guard(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
+    admin_user = os.getenv("ADMIN_USER", "admin")
+    admin_password = os.getenv("ADMIN_PASSWORD", "admin")
+
+    if credentials.username != admin_user or credentials.password != admin_password:
+        raise HTTPException(
+            status_code=401,
+            detail="Unauthorized",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+
+    return credentials.username
+
 professional_categories = Table(
     'professional_categories', Base.metadata,
     Column('professional_id', ForeignKey('professionals.id'), primary_key=True),
