@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PunëMbaruar — Merr oferta, zgjidh më mirë</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home">Punë<span>Mbaruar</span></a>
+    <nav>
+      <a href="#how">Si funksionon</a>
+      <a href="#categories">Kategoritë</a>
+      <a href="#professionals">Për profesionistët</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-ghost" data-open="loginModal">Hyr</button>
+      <button class="btn btn-primary" data-scroll="request">Posto kërkesë</button>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Marketplace kërkesash & ofertash</div>
+        <h1>Thuaj çfarë të duhet.<br><span>Ofertat vijnë te ti.</span></h1>
+        <p>
+          Për servis, pjesë këmbimi ose shërbime. Posto kërkesën një herë dhe
+          profesionistët e përshtatshëm të përgjigjen me ofertë.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" data-scroll="request">Posto kërkesë falas</button>
+          <button class="btn btn-secondary btn-large" data-scroll="professionals">Jam profesionist</button>
+        </div>
+        <div class="trust-row">
+          <span>✓ Pa email të detyrueshëm</span>
+          <span>✓ Telefon + OTP</span>
+          <span>✓ Ofertat krahasohen në një vend</span>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-top">
+          <span class="live-dot"></span>
+          Kërkesë e re
+        </div>
+        <h3>Golf 6 • 1.6 TDI • 2011</h3>
+        <p>Kërkoj disqe dhe ferota para, të reja.</p>
+        <div class="mini-meta">
+          <span>Tiranë</span><span>Pjesë këmbimi</span>
+        </div>
+        <div class="notification-preview">
+          <div class="wa-icon">W</div>
+          <div>
+            <strong>Njoftim WhatsApp</strong>
+            <p>Bizneset e kategorisë marrin kërkesën automatikisht.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="categories" class="section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Fillo këtu</span>
+          <h2>Çfarë të duhet?</h2>
+        </div>
+        <p>Dy hyrje të thjeshta. Automotive është kategoria kryesore e launch-it.</p>
+      </div>
+
+      <div class="category-grid">
+        <button class="category-card featured" data-category="Makina" data-scroll="request">
+          <div class="category-icon">🚗</div>
+          <div>
+            <span class="tag">Kategoria kryesore</span>
+            <h3>Makina</h3>
+            <p>Servis, riparime, diagnostikë dhe pjesë këmbimi.</p>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+
+        <button class="category-card" data-category="Shërbime" data-scroll="request">
+          <div class="category-icon">🛠️</div>
+          <div>
+            <span class="tag muted">Në zgjerim</span>
+            <h3>Shërbime</h3>
+            <p>Hidraulik, elektricist, kondicioner, montime dhe më shumë.</p>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="how" class="section soft-section">
+      <div class="section-head centered">
+        <span class="eyebrow">Si funksionon</span>
+        <h2>Nga kërkesa te oferta</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><span>1</span><h3>Posto</h3><p>Zgjidh kategorinë dhe përshkruaj çfarë të duhet.</p></div>
+        <div class="step"><span>2</span><h3>Matching</h3><p>Sistemi gjen profesionistët sipas kategorisë dhe zonës.</p></div>
+        <div class="step"><span>3</span><h3>WhatsApp</h3><p>Profesionistët marrin njoftim me link direkt për ofertën.</p></div>
+        <div class="step"><span>4</span><h3>Zgjidh</h3><p>Krahason ofertat dhe zgjedh atë që të përshtatet.</p></div>
+      </div>
+    </section>
+
+    <section id="request" class="section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Klienti</span>
+          <h2>Posto kërkesë</h2>
+        </div>
+        <p>Nuk kërkohet email. Në fund mjaftojnë emri dhe telefoni.</p>
+      </div>
+
+      <div class="request-layout">
+        <form id="requestForm" class="form-card">
+          <div class="form-progress">
+            <span class="active"></span><span></span><span></span>
+          </div>
+
+          <label>Kategoria</label>
+          <div class="segmented">
+            <input type="radio" name="category" id="catCar" value="Makina" checked>
+            <label for="catCar">🚗 Makina</label>
+            <input type="radio" name="category" id="catServices" value="Shërbime">
+            <label for="catServices">🛠️ Shërbime</label>
+          </div>
+
+          <div id="carFields">
+            <label for="carNeed">Çfarë kërkon?</label>
+            <select id="carNeed" name="carNeed">
+              <option value="Servis / Riparim">Servis / Riparim</option>
+              <option value="Pjesë këmbimi">Pjesë këmbimi</option>
+              <option value="Diagnostikim">Nuk e di problemin / Diagnostikim</option>
+            </select>
+
+            <div class="grid-2">
+              <div>
+                <label for="make">Marka</label>
+                <input id="make" name="make" placeholder="p.sh. Toyota">
+              </div>
+              <div>
+                <label for="model">Modeli</label>
+                <input id="model" name="model" placeholder="p.sh. Yaris">
+              </div>
+              <div>
+                <label for="year">Viti</label>
+                <input id="year" name="year" inputmode="numeric" placeholder="2007">
+              </div>
+              <div>
+                <label for="engine">Motori</label>
+                <input id="engine" name="engine" placeholder="1.4 D-4D">
+              </div>
+            </div>
+          </div>
+
+          <div id="serviceFields" class="hidden">
+            <label for="serviceType">Lloji i shërbimit</label>
+            <select id="serviceType" name="serviceType">
+              <option>Hidraulik</option>
+              <option>Elektricist</option>
+              <option>Kondicioner</option>
+              <option>Bojaxhi</option>
+              <option>Pastrim</option>
+              <option>Montime</option>
+              <option>Tjetër</option>
+            </select>
+          </div>
+
+          <label for="description">Përshkruaj kërkesën</label>
+          <textarea id="description" name="description" rows="5" placeholder="Shkruaj sa më qartë çfarë të duhet..." required></textarea>
+
+          <div class="grid-2">
+            <div>
+              <label for="city">Qyteti</label>
+              <select id="city" name="city">
+                <option>Tiranë</option>
+                <option>Durrës</option>
+                <option>Elbasan</option>
+                <option>Fier</option>
+                <option>Vlorë</option>
+                <option>Shkodër</option>
+              </select>
+            </div>
+            <div>
+              <label for="zone">Zona</label>
+              <input id="zone" name="zone" placeholder="p.sh. Astir">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="name">Emri</label>
+              <input id="name" name="name" placeholder="Emri" required>
+            </div>
+            <div>
+              <label for="phone">Telefoni</label>
+              <input id="phone" name="phone" inputmode="tel" placeholder="+355 6X XXX XXXX" required>
+            </div>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" required>
+            <span>Pranoj që numri të verifikohet me OTP për publikimin e kërkesës.</span>
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-large full">Posto kërkesën</button>
+          <p class="fine-print">Në versionin real, pas këtij hapi dërgohet OTP me SMS dhe krijohet automatikisht profili i klientit.</p>
+        </form>
+
+        <aside class="side-panel">
+          <span class="eyebrow">Çfarë ndodh pastaj?</span>
+          <h3>Kërkesa shpërndahet automatikisht.</h3>
+          <ul class="clean-list">
+            <li><b>1.</b> Sistemi lexon kategorinë dhe zonën.</li>
+            <li><b>2.</b> Gjen profesionistët e regjistruar për atë kategori.</li>
+            <li><b>3.</b> U dërgon WhatsApp me link direkt.</li>
+            <li><b>4.</b> Ata plotësojnë ofertën në PunëMbaruar.</li>
+            <li><b>5.</b> Klienti krahason ofertat.</li>
+          </ul>
+          <div class="code-note">WhatsApp = njoftim<br>PunëMbaruar = ofertë + chat + review</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="professionals" class="section dark-section">
+      <div class="section-head light">
+        <div>
+          <span class="eyebrow">Për profesionistët</span>
+          <h2>Merr kërkesa të reja pa kontrolluar faqen gjithë ditën.</h2>
+        </div>
+        <p>Regjistrimi në fazën e lançimit është falas.</p>
+      </div>
+
+      <div class="professional-grid">
+        <form id="professionalForm" class="form-card dark-card">
+          <div class="grid-2">
+            <div>
+              <label for="proName">Emri / Biznesi</label>
+              <input id="proName" required placeholder="Auto Dori Service">
+            </div>
+            <div>
+              <label for="proPhone">WhatsApp</label>
+              <input id="proPhone" required placeholder="+355 6X XXX XXXX">
+            </div>
+          </div>
+
+          <label for="proType">Lloji</label>
+          <select id="proType">
+            <option>Biznes</option>
+            <option>Profesionist individual</option>
+          </select>
+
+          <label>Kategoritë</label>
+          <div class="chips" id="professionalCategories">
+            <button type="button" class="chip active">Servis automjetesh</button>
+            <button type="button" class="chip">Pjesë këmbimi</button>
+            <button type="button" class="chip">Autoelektrik</button>
+            <button type="button" class="chip">Gomisteri</button>
+            <button type="button" class="chip">Hidraulik</button>
+            <button type="button" class="chip">Elektricist</button>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label for="proCity">Qyteti</label>
+              <select id="proCity"><option>Tiranë</option><option>Durrës</option></select>
+            </div>
+            <div>
+              <label for="proZone">Zona</label>
+              <input id="proZone" placeholder="Zona që mbulon">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large full">Regjistrohu falas</button>
+        </form>
+
+        <div class="pro-benefits">
+          <div class="benefit"><span>01</span><div><h3>Kërkesat vijnë te ti</h3><p>WhatsApp automatik kur ka kërkesë të përshtatshme.</p></div></div>
+          <div class="benefit"><span>02</span><div><h3>Një klik te oferta</h3><p>Linku hap direkt formularin për kërkesën specifike.</p></div></div>
+          <div class="benefit"><span>03</span><div><h3>Ndërto reputacion</h3><p>Reviews të verifikuara dhe historik pune brenda platformës.</p></div></div>
+          <div class="founding">FOUNDING MEMBER • Access promocional falas</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="dashboard-demo">
+        <div class="dashboard-title">
+          <div>
+            <span class="eyebrow">Panel profesionisti</span>
+            <h2>Shiko vlerën që të sjell platforma.</h2>
+          </div>
+          <span class="status-pill">Demo</span>
+        </div>
+        <div class="stats-grid">
+          <div><small>Kërkesa</small><strong>31</strong><span>këtë muaj</span></div>
+          <div><small>Oferta</small><strong>18</strong><span>të dërguara</span></div>
+          <div><small>Punë fituar</small><strong>9</strong><span>nga PunëMbaruar</span></div>
+          <div><small>Vlerë pune</small><strong>120K</strong><span>lekë</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="loginModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="loginModal"></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close="loginModal">×</button>
+      <span class="eyebrow">Hyrje e thjeshtë</span>
+      <h2>Hyr me telefon</h2>
+      <p>Në V1, klienti nuk ka nevojë për password ose email.</p>
+      <label>Numri i telefonit</label>
+      <input placeholder="+355 6X XXX XXXX">
+      <button class="btn btn-primary full">Merr kodin OTP</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="brand">Punë<span>Mbaruar</span></div>
+    <p>Prototype V1 • Marketplace kërkesash & ofertash</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
