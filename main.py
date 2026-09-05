@@ -573,7 +573,8 @@ class ProfessionalCreate(BaseModel):
     description: str | None = None
 
 @app.post('/api/professionals')
-def create_professional(data: ProfessionalCreate):
+@limiter.limit("3/minute")
+def create_professional(request: Request, data: ProfessionalCreate):
     db = SessionLocal()
     try:
         phone = normalize_phone(data.phone); wa = normalize_phone(data.whatsapp)
