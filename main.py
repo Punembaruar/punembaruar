@@ -409,10 +409,10 @@ def seed_categories():
         by_slug = {c.slug: c for c in db.query(Category).all()}
 
         for name, slug, parent_slug in seed:
-            if slug in by_slug:
-                by_slug[slug].active = True
-                db.commit()
-                continue
+           if slug in by_slug:
+           by_slug[slug].active = True
+           db.commit()
+           continue
             parent = by_slug.get(parent_slug) if parent_slug else None
             c = Category(
                 name=name,
