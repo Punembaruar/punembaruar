@@ -324,6 +324,8 @@ UPLOAD_DIR = BASE_DIR/'uploads'
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 app = FastAPI(title='PunëMbaruar', version='1.6.0-render-ready')
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
 app.mount('/static', StaticFiles(directory=BASE_DIR), name='static')
 templates = Jinja2Templates(directory=str(BASE_DIR/'templates'))
 security = HTTPBasic(auto_error=False)
