@@ -408,10 +408,12 @@ def seed_categories():
     try:
         by_slug = {c.slug: c for c in db.query(Category).all()}
 
-        for name, slug, parent_slug in seed:
-    if slug in by_slug:
-        by_slug[slug].active = True
-        continue
+    for name, slug, parent_slug in seed:
+        if slug in by_slug:
+            by_slug[slug].active = True
+            continue
+
+        parent = by_slug.get(parent_slug) if parent_slug else None
 
             parent = by_slug.get(parent_slug) if parent_slug else None
             c = Category(
