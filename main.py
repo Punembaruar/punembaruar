@@ -404,7 +404,7 @@ def seed_categories():
         ('Pastrim','pastrim','sherbime'),
         ('Montime','montime','sherbime'),
     ]
-        db = SessionLocal()
+    db = SessionLocal()
     try:
         by_slug = {c.slug: c for c in db.query(Category).all()}
 
