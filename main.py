@@ -536,7 +536,8 @@ class RequestCreate(BaseModel):
     source: str = 'direct'
 
 @app.post('/api/requests')
-def create_request(data: RequestCreate):
+@limiter.limit("5/minute")
+def create_request(request: Request, data: RequestCreate):
     db = SessionLocal()
     try:
         phone = normalize_phone(data.phone)
