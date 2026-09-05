@@ -32,8 +32,14 @@ def get_db():
         db.close()
 
 def admin_guard(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
-    admin_user = os.getenv("ADMIN_USER", "admin")
-    admin_password = os.getenv("ADMIN_PASSWORD", "admin")
+admin_user = os.getenv("ADMIN_USER")
+admin_password = os.getenv("ADMIN_PASSWORD")
+
+if not admin_user or not admin_password:
+    raise HTTPException(
+        status_code=503,
+        detail="Admin authentication is not configured"
+    )
 
     if credentials.username != admin_user or credentials.password != admin_password:
         raise HTTPException(
