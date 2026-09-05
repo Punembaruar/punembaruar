@@ -538,6 +538,7 @@ def create_request(data: RequestCreate):
         if not user:
             user = User(name=data.name.strip(), phone=phone)
             db.add(user); db.flush()
+            print("DEBUG CATEGORY SLUG:", repr(data.category_slug), flush=True)
         cat = db.query(Category).filter(Category.slug==data.category_slug, Category.active==True).first()
         if not cat: raise HTTPException(400, 'Kategori e pavlefshme')
         req = ServiceRequest(client_id=user.id, category_id=cat.id, request_type=data.request_type,
