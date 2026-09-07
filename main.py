@@ -646,20 +646,20 @@ def pin_register(request: Request, data: PinRegister):
 
         db.commit()
 
-       response = JSONResponse({
-    'ok': True,
-    'dashboard_url': '/client'
-})
+        response = JSONResponse({
+            'ok': True,
+            'dashboard_url': '/client'
+        })
 
-response.set_cookie(
-    'pm_session',
-    token,
-    max_age=2592000,
-    httponly=True,
-    samesite='lax'
-)
+        response.set_cookie(
+            'pm_session',
+            token,
+            max_age=2592000,
+            httponly=True,
+            samesite='lax'
+        )
 
-return response
+        return response
 
     finally:
         db.close()
