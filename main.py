@@ -707,9 +707,22 @@ def pin_login(request: Request, data: PinLogin):
         db.commit()
 
         response = JSONResponse({
-    'ok': True,
-    'dashboard_url': '/client'
-})
+            'ok': True,
+            'dashboard_url': '/client'
+        })
+
+        response.set_cookie(
+            'pm_session',
+            token,
+            max_age=2592000,
+            httponly=True,
+            samesite='lax'
+        )
+
+        return response
+
+    finally:
+        db.close()
 
 response.set_cookie(
     'pm_session',
