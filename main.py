@@ -831,27 +831,124 @@ class ProfessionalCreate(BaseModel):
     name: str
     phone: str
     whatsapp: str
-    professional_type: str = 'business'
+    pin: str
+    pin_confirm: str
+
+    professional_type: str = "business"
+
     city: str
     zone: str | None = None
+
     category_slugs: list[str]
+
     description: str | None = None
+
 
 @app.post('/api/professionals')
 @limiter.limit("3/minute")
-def create_professional(request: Request, data: ProfessionalCreate):
+def create_professional(
+    request: Request,
+    data: ProfessionalCreate
+):
     db = SessionLocal()
+
     try:
-        phone = normalize_phone(data.phone); wa = normalize_phone(data.whatsapp)
-        if db.query(Professional).filter(Professional.phone==phone).first(): raise HTTPException(409, 'Ky numër është regjistruar')
-        cats = db.query(Category).filter(Category.slug.in_(data.category_slugs)).all()
-        if not cats: raise HTTPException(400, 'Zgjidh të paktën një kategori')
-        pro = Professional(name=data.name.strip(), phone=phone, whatsapp=wa,
-            professional_type=data.professional_type, city=data.city, zone=data.zone,
-            description=data.description, categories=cats)
-        db.add(pro); db.commit(); db.refresh(pro)
-        return {'ok': True, 'professional_id': pro.id, 'founding_member': pro.founding_member}
-    finally: db.close()
+        # -----------------------------
+        # NORMALIZO TELEFONAT
+        # -----------------------------
+        phone = normalize_phone(data.phone)
+        whatsapp = normalize_phone(data.whatsapp)
+
+        # -----------------------------
+        # VALIDIM PIN
+        # -----------------------------
+        if data.pin != data.pin_confirm:
+            raise HTTPException(
+                status_code=400,
+                detail="PIN-et nuk përputhen"
+            )
+
+        if not data.pin.isdigit() or len(data.pin) != 6:
+            raise HTTPException(
+                status_code=400,
+                detail="PIN duhet të ketë saktësisht 6 shifra"
+            )
+
+        # -----------------------------
+        # KONTROLLO TELEFONIN
+        # -----------------------------
+        existing_professional = (
+            db.query(Professional)
+            .filter(Professional.phone == phone)
+            .first()
+        )
+
+        if existing_professional:
+            raise HTTPException(
+                status_code=409,
+                detail="Ky numër është regjistruar"
+            )
+
+        # -----------------------------
+        # KATEGORITË
+        # -----------------------------
+        categories = (
+            db.query(Category)
+            .filter(Category.slug.in_(data.category_slugs))
+            .all()
+        )
+
+        if not categories:
+            raise HTTPException(
+                status_code=422,
+                detail="Zgjidh të paktën një kategori"
+            )
+
+        # -----------------------------
+        # KRIJO BIZNESIN
+        # -----------------------------
+        professional = Professional(
+            name=data.name.strip(),
+            phone=phone,
+            pin_hash=hash_pin(data.pin),
+            whatsapp=whatsapp,
+
+            professional_type=data.professional_type,
+
+            city=data.city.strip(),
+            zone=data.zone.strip() if data.zone else None,
+
+            description=(
+                data.description.strip()
+                if data.description
+                else None
+            ),
+
+            categories=categories,
+
+            # Biznesi nuk merr kërkesa
+            # pa u aprovuar nga Admin
+            verified=False,
+            active=False
+        )
+
+        db.add(professional)
+        db.commit()
+        db.refresh(professional)
+
+        return {
+            "ok": True,
+            "professional_id": professional.id,
+            "status": "pending_verification",
+            "message": (
+                "Regjistrimi u krye me sukses. "
+                "Biznesi është në pritje të verifikimit."
+            ),
+            "founding_member": professional.founding_member
+        }
+
+    finally:
+        db.close()
 
 @app.get('/api/requests/{request_id}')
 def get_request(request_id: int):
