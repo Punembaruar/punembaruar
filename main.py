@@ -94,23 +94,37 @@ class Category(Base):
 
 class Professional(Base):
     __tablename__ = 'professionals'
+
     id = Column(Integer, primary_key=True)
     name = Column(String(160), nullable=False)
     phone = Column(String(32), unique=True, nullable=False)
+    pin_hash = Column(String(128), nullable=True)
     whatsapp = Column(String(32), nullable=False)
+
     professional_type = Column(String(40), default='business')
     city = Column(String(80), nullable=False)
     zone = Column(String(120), nullable=True)
     description = Column(Text, nullable=True)
+
     verified = Column(Boolean, default=False)
     founding_member = Column(Boolean, default=True)
     rating = Column(Float, default=0)
     plan = Column(String(30), default='FREE')
     active = Column(Boolean, default=True)
     response_rate = Column(Float, default=0)
+
     created_at = Column(DateTime, default=datetime.utcnow)
-    categories = relationship('Category', secondary=professional_categories, back_populates='professionals')
-    offers = relationship('Offer', back_populates='professional')
+
+    categories = relationship(
+        'Category',
+        secondary=professional_categories,
+        back_populates='professionals'
+    )
+
+    offers = relationship(
+        'Offer',
+        back_populates='professional'
+    )
 
 class Vehicle(Base):
     __tablename__ = 'vehicles'
@@ -335,11 +349,30 @@ def ensure_user_pin_column():
 
     if "pin_hash" not in columns:
         with engine.begin() as conn:
-            conn.execute(text(
-                "ALTER TABLE users ADD COLUMN pin_hash VARCHAR(128)"
-            ))
+            conn.execute(
+                text(
+                    "ALTER TABLE users "
+                    "ADD COLUMN pin_hash VARCHAR(128)"
+                )
+            )
+
+
+def ensure_professional_pin_column():
+    inspector = inspect(engine)
+    columns = [col["name"] for col in inspector.get_columns("professionals")]
+
+    if "pin_hash" not in columns:
+        with engine.begin() as conn:
+            conn.execute(
+                text(
+                    "ALTER TABLE professionals "
+                    "ADD COLUMN pin_hash VARCHAR(128)"
+                )
+            )
+
 
 ensure_user_pin_column()
+ensure_professional_pin_column()
 UPLOAD_DIR = BASE_DIR/'uploads'
 UPLOAD_DIR.mkdir(exist_ok=True)
 
