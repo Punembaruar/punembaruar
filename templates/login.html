@@ -1,3 +1,148 @@
-<!doctype html><html lang="sq"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyr — PunëMbaruar</title><link rel="stylesheet" href="/static/styles.css"></head><body>
-<header class="topbar"><a class="brand" href="/">Punë<span>Mbaruar</span></a></header>
-<main class="section auth-wrap"><form id="loginForm" class="form-card auth-card"><span class="eyebrow">Hyrje pa password</span><h1>Hyr me telefon</h1><p class="muted-text">Vendos numrin. Në këtë version testues kodi OTP shfaqet në ekran; në production dërgohet me SMS.</p><label>Emri <small>(vetëm nëse je klient i ri)</small></label><input id="loginName" placeholder="Emri"><label>Telefoni</label><input id="loginPhone" required placeholder="+355 6X XXX XXXX"><button type="button" id="sendOtp" class="btn btn-secondary full">Merr kodin OTP</button><div id="otpArea" class="hidden"><label>Kodi OTP</label><input id="loginCode" inputmode="numeric" maxlength="6"><div id="devOtp" class="result-box"></div><button class="btn btn-primary btn-large full">Hyr në PunëMbaruar</button></div><div id="loginResult" class="result-box hidden"></div></form></main><div id="toast" class="toast"></div><script src="/static/app.js"></script></body></html>
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hyr — PunëMbaruar</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">Punë<span>Mbaruar</span></a>
+</header>
+
+<main class="section auth-wrap">
+
+  <form id="pinLoginForm" class="form-card auth-card">
+
+    <span class="eyebrow">HYRJE E SIGURT</span>
+
+    <h1>Hyr me telefon</h1>
+
+    <p class="muted-text">
+      Vendos numrin e telefonit dhe PIN-in tënd 6-shifror.
+    </p>
+
+    <label>Telefoni</label>
+    <input
+      id="pinLoginPhone"
+      required
+      placeholder="+355 6X XXX XXXX"
+      autocomplete="tel"
+    >
+
+    <label>PIN 6-shifror</label>
+    <input
+      id="pinLoginPin"
+      required
+      type="password"
+      inputmode="numeric"
+      maxlength="6"
+      minlength="6"
+      pattern="[0-9]{6}"
+      placeholder="••••••"
+      autocomplete="current-password"
+    >
+
+    <button class="btn btn-primary btn-large full">
+      Hyr në PunëMbaruar
+    </button>
+
+    <div id="pinLoginResult" class="result-box hidden"></div>
+
+    <p class="muted-text" style="margin-top:18px">
+      Nuk ke llogari?
+      <button
+        type="button"
+        id="showPinRegister"
+        class="link-button"
+      >
+        Regjistrohu
+      </button>
+    </p>
+
+  </form>
+
+
+  <form id="pinRegisterForm" class="form-card auth-card hidden">
+
+    <span class="eyebrow">KRIJO LLOGARI</span>
+
+    <h1>Regjistrohu</h1>
+
+    <p class="muted-text">
+      Krijo një PIN 6-shifror që do ta përdorësh për hyrjet e ardhshme.
+    </p>
+
+    <label>Emri</label>
+    <input
+      id="pinRegisterName"
+      required
+      maxlength="120"
+      placeholder="Emri"
+      autocomplete="name"
+    >
+
+    <label>Telefoni</label>
+    <input
+      id="pinRegisterPhone"
+      required
+      placeholder="+355 6X XXX XXXX"
+      autocomplete="tel"
+    >
+
+    <label>Krijo PIN 6-shifror</label>
+    <input
+      id="pinRegisterPin"
+      required
+      type="password"
+      inputmode="numeric"
+      maxlength="6"
+      minlength="6"
+      pattern="[0-9]{6}"
+      placeholder="••••••"
+      autocomplete="new-password"
+    >
+
+    <label>Përsërit PIN-in</label>
+    <input
+      id="pinRegisterPinConfirm"
+      required
+      type="password"
+      inputmode="numeric"
+      maxlength="6"
+      minlength="6"
+      pattern="[0-9]{6}"
+      placeholder="••••••"
+      autocomplete="new-password"
+    >
+
+    <button class="btn btn-primary btn-large full">
+      Krijo llogarinë
+    </button>
+
+    <div id="pinRegisterResult" class="result-box hidden"></div>
+
+    <p class="muted-text" style="margin-top:18px">
+      Ke llogari?
+      <button
+        type="button"
+        id="showPinLogin"
+        class="link-button"
+      >
+        Hyr
+      </button>
+    </p>
+
+  </form>
+
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="/static/app.js"></script>
+
+</body>
+</html>
