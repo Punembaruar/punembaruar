@@ -771,11 +771,11 @@ def logout(request: Request):
 
 @app.get('/login', response_class=HTMLResponse)
 def login_page(request: Request):
-return templates.TemplateResponse(
-    request=request,
-    name="login.html",
-    context={"request": request}
-)
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={"request": request}
+    )
 
 @app.get('/client', response_class=HTMLResponse)
 def client_page(request: Request):
