@@ -7,23 +7,56 @@ const rf=$('#requestForm');if(rf)rf.addEventListener('submit',async e=>{e.preven
 const pf=$('#professionalForm');if(pf)pf.addEventListener('submit',async e=>{e.preventDefault();try{const cats=$$('#proCats .chip.active').map(x=>x.dataset.slug);const data={name:$('#proName').value,phone:$('#proWhatsApp').value,whatsapp:$('#proWhatsApp').value,professional_type:$('#proType').value,city:$('#proCity').value,zone:$('#proZone').value||null,category_slugs:cats};const j=await postJSON('/api/professionals',data);const box=$('#proResult');box.classList.remove('hidden');box.innerHTML=`<strong>U regjistrua.</strong> ID profesionisti: ${j.professional_id}. Founding Member: ${j.founding_member?'Po':'Jo'}`;toast('Profili u krijua');}catch(err){toast(err.message)}});
 const of=$('#offerForm');if(of)of.addEventListener('submit',async e=>{e.preventDefault();try{const req=Number(of.dataset.request),pro=Number(of.dataset.professional);const qt=$('#quoteType')?.value||'fixed';const price=$('#offerPrice')?.value?Number($('#offerPrice').value):null;const j=await postJSON(`/api/requests/${req}/offers`,{professional_id:pro,quote_type:qt,price:qt==='fixed'?price:null,price_from:$('#offerFrom')?.value?Number($('#offerFrom').value):null,price_to:$('#offerTo')?.value?Number($('#offerTo').value):null,diagnostic_fee:$('#diagnosticFee')?.value?Number($('#diagnosticFee').value):null,parts_price:$('#partsPrice')?.value?Number($('#partsPrice').value):null,labor_price:$('#laborPrice')?.value?Number($('#laborPrice').value):null,estimated_time:$('#estimatedTime')?.value||null,warranty:$('#offerWarranty')?.value||null,appointment_note:$('#appointmentNote')?.value||null,message:$('#offerMessage').value||null});const box=$('#offerResult');box.classList.remove('hidden');box.innerHTML=`<strong>Oferta #${j.offer_id} u dërgua.</strong>`;}catch(err){const box=$('#offerResult');box.classList.remove('hidden');box.textContent=err.message}});
 
-const loginForm=$('#loginForm');
-if(loginForm){
-  $('#sendOtp')?.addEventListener('click',async()=>{
-    try{
-      const j=await postJSON('/api/auth/otp/start',{phone:$('#loginPhone').value});
-      $('#otpArea').classList.remove('hidden');
-      $('#devOtp').innerHTML=`<strong>Kodi DEV:</strong> ${j.dev_code}<br><small>Në production ky kod do të vijë me SMS.</small>`;
-      $('#loginCode').value=j.dev_code;
-      toast('Kodi OTP u krijua');
-    }catch(err){toast(err.message)}
-  });
-  loginForm.addEventListener('submit',async e=>{
+const pinLoginForm = $('#pinLoginForm');
+const pinRegisterForm = $('#pinRegisterForm');
+
+$('#showPinRegister')?.addEventListener('click', () => {
+  pinLoginForm?.classList.add('hidden');
+  pinRegisterForm?.classList.remove('hidden');
+});
+
+$('#showPinLogin')?.addEventListener('click', () => {
+  pinRegisterForm?.classList.add('hidden');
+  pinLoginForm?.classList.remove('hidden');
+});
+
+if (pinLoginForm) {
+  pinLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    try{
-      const j=await postJSON('/api/auth/session',{phone:$('#loginPhone').value,code:$('#loginCode').value,name:$('#loginName').value||'Klient'});
-      location.href=j.dashboard_url;
-    }catch(err){toast(err.message)}
+
+    try {
+      const j = await postJSON('/api/auth/pin/login', {
+        phone: $('#pinLoginPhone').value,
+        pin: $('#pinLoginPin').value
+      });
+
+      toast('Hyrja u krye');
+      location.href = j.dashboard_url;
+
+    } catch (err) {
+      toast(err.message);
+    }
+  });
+}
+
+if (pinRegisterForm) {
+  pinRegisterForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    try {
+      const j = await postJSON('/api/auth/pin/register', {
+        name: $('#pinRegisterName').value,
+        phone: $('#pinRegisterPhone').value,
+        pin: $('#pinRegisterPin').value,
+        pin_confirm: $('#pinRegisterPinConfirm').value
+      });
+
+      toast('Llogaria u krijua');
+      location.href = j.dashboard_url;
+
+    } catch (err) {
+      toast(err.message);
+    }
   });
 }
 
