@@ -58,9 +58,11 @@ professional_categories = Table(
 
 class User(Base):
     __tablename__ = 'users'
+
     id = Column(Integer, primary_key=True)
     name = Column(String(120), nullable=False)
     phone = Column(String(32), unique=True, nullable=False, index=True)
+    pin_hash = Column(String(128), nullable=True)
     role = Column(String(20), default='client')
     created_at = Column(DateTime, default=datetime.utcnow)
     requests = relationship('ServiceRequest', back_populates='client')
