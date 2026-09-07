@@ -17,12 +17,12 @@
 
   <form id="pinLoginForm" class="form-card auth-card">
 
-    <span class="eyebrow">HYRJE E SIGURT</span>
+    <span class="eyebrow">HYRJE BIZNESI</span>
 
-    <h1>Hyr me telefon</h1>
+    <h1>Hyr në llogarinë e biznesit</h1>
 
     <p class="muted-text">
-      Vendos numrin e telefonit dhe PIN-in tënd 6-shifror.
+      Vendos numrin e telefonit dhe PIN-in 6-shifror të biznesit.
     </p>
 
     <label>Telefoni</label>
@@ -53,87 +53,8 @@
     <div id="pinLoginResult" class="result-box hidden"></div>
 
     <p class="muted-text" style="margin-top:18px">
-      Nuk ke llogari?
-      <button
-        type="button"
-        id="showPinRegister"
-        class="link-button"
-      >
-        Regjistrohu
-      </button>
-    </p>
-
-  </form>
-
-
-  <form id="pinRegisterForm" class="form-card auth-card hidden">
-
-    <span class="eyebrow">KRIJO LLOGARI</span>
-
-    <h1>Regjistrohu</h1>
-
-    <p class="muted-text">
-      Krijo një PIN 6-shifror që do ta përdorësh për hyrjet e ardhshme.
-    </p>
-
-    <label>Emri</label>
-    <input
-      id="pinRegisterName"
-      required
-      maxlength="120"
-      placeholder="Emri"
-      autocomplete="name"
-    >
-
-    <label>Telefoni</label>
-    <input
-      id="pinRegisterPhone"
-      required
-      placeholder="+355 6X XXX XXXX"
-      autocomplete="tel"
-    >
-
-    <label>Krijo PIN 6-shifror</label>
-    <input
-      id="pinRegisterPin"
-      required
-      type="password"
-      inputmode="numeric"
-      maxlength="6"
-      minlength="6"
-      pattern="[0-9]{6}"
-      placeholder="••••••"
-      autocomplete="new-password"
-    >
-
-    <label>Përsërit PIN-in</label>
-    <input
-      id="pinRegisterPinConfirm"
-      required
-      type="password"
-      inputmode="numeric"
-      maxlength="6"
-      minlength="6"
-      pattern="[0-9]{6}"
-      placeholder="••••••"
-      autocomplete="new-password"
-    >
-
-    <button class="btn btn-primary btn-large full">
-      Krijo llogarinë
-    </button>
-
-    <div id="pinRegisterResult" class="result-box hidden"></div>
-
-    <p class="muted-text" style="margin-top:18px">
-      Ke llogari?
-      <button
-        type="button"
-        id="showPinLogin"
-        class="link-button"
-      >
-        Hyr
-      </button>
+      Nuk ke biznes të regjistruar?
+      <a href="/#professionals">Regjistro biznesin nga faqja kryesore</a>
     </p>
 
   </form>
