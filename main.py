@@ -578,6 +578,144 @@ class OTPVerify(BaseModel):
     code: str
     name: str = 'Klient'
 
+class PinRegister(BaseModel):
+    name: str
+    phone: str
+    pin: str
+    pin_confirm: str
+
+
+@app.post('/api/auth/pin/register')
+@limiter.limit("3/minute")
+def pin_register(request: Request, data: PinRegister):
+    phone = normalize_phone(data.phone)
+
+    name = data.name.strip()
+    if len(name) < 2 or len(name) > 120:
+        raise HTTPException(
+            status_code=400,
+            detail="Emri është i pavlefshëm"
+        )
+
+    if data.pin != data.pin_confirm:
+        raise HTTPException(
+            status_code=400,
+            detail="PIN-et nuk përputhen"
+        )
+
+    pin_hash = hash_pin(data.pin)
+
+    db = SessionLocal()
+
+    try:
+        user = db.query(User).filter(User.phone == phone).first()
+
+        if user:
+            if user.pin_hash:
+                raise HTTPException(
+                    status_code=409,
+                    detail="Ky numër është regjistruar. Përdor Hyr."
+                )
+
+            user.name = name
+            user.pin_hash = pin_hash
+
+        else:
+            user = User(
+                name=name,
+                phone=phone,
+                pin_hash=pin_hash,
+                role='client'
+            )
+            db.add(user)
+
+        db.commit()
+        db.refresh(user)
+
+        token = secrets.token_urlsafe(32)
+
+        db.add(
+            AuthSession(
+                token=token,
+                phone=phone,
+                role='client',
+                user_id=user.id,
+                expires_at=datetime.utcnow() + timedelta(days=30)
+            )
+        )
+
+        db.commit()
+
+        return {
+            'ok': True,
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'phone': user.phone
+            },
+            'token': token,
+            'dashboard_url': '/client'
+        }
+
+    finally:
+        db.close()
+
+
+class PinLogin(BaseModel):
+    phone: str
+    pin: str
+
+
+@app.post('/api/auth/pin/login')
+@limiter.limit("5/minute")
+def pin_login(request: Request, data: PinLogin):
+    phone = normalize_phone(data.phone)
+
+    db = SessionLocal()
+
+    try:
+        user = db.query(User).filter(User.phone == phone).first()
+
+        if not user or not user.pin_hash:
+            raise HTTPException(
+                status_code=401,
+                detail="Telefon ose PIN i pasaktë"
+            )
+
+        if not verify_pin(data.pin, user.pin_hash):
+            raise HTTPException(
+                status_code=401,
+                detail="Telefon ose PIN i pasaktë"
+            )
+
+        token = secrets.token_urlsafe(32)
+
+        db.add(
+            AuthSession(
+                token=token,
+                phone=phone,
+                role='client',
+                user_id=user.id,
+                expires_at=datetime.utcnow() + timedelta(days=30)
+            )
+        )
+
+        db.commit()
+
+        return {
+            'ok': True,
+            'user': {
+                'id': user.id,
+                'name': user.name,
+                'phone': user.phone
+            },
+            'token': token,
+            'dashboard_url': '/client'
+        }
+
+    finally:
+        db.close()
+
 @app.post('/api/auth/otp/verify')
 def otp_verify(data: OTPVerify):
     phone = normalize_phone(data.phone)
