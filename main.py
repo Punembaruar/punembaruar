@@ -8,7 +8,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Boolean, ForeignKey, Float, Table
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, Boolean, ForeignKey, Float, Table, inspect, text
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -328,6 +328,18 @@ class AppSetting(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 Base.metadata.create_all(engine)
+
+def ensure_user_pin_column():
+    inspector = inspect(engine)
+    columns = [col["name"] for col in inspector.get_columns("users")]
+
+    if "pin_hash" not in columns:
+        with engine.begin() as conn:
+            conn.execute(text(
+                "ALTER TABLE users ADD COLUMN pin_hash VARCHAR(128)"
+            ))
+
+ensure_user_pin_column()
 UPLOAD_DIR = BASE_DIR/'uploads'
 UPLOAD_DIR.mkdir(exist_ok=True)
 
@@ -379,6 +391,48 @@ def normalize_phone(phone: str) -> str:
     if p.startswith('355'):
         p = '+' + p
     return p
+
+
+def hash_pin(pin: str) -> str:
+    if not pin.isdigit() or len(pin) != 6:
+        raise HTTPException(
+            status_code=400,
+            detail="PIN duhet të ketë 6 shifra"
+        )
+
+    salt = secrets.token_hex(16)
+
+    digest = hashlib.pbkdf2_hmac(
+        "sha256",
+        pin.encode(),
+        salt.encode(),
+        200000
+    ).hex()
+
+    return f"{salt}${digest}"
+
+
+def verify_pin(pin: str, stored_hash: str) -> bool:
+    if not stored_hash:
+        return False
+
+    if not pin.isdigit() or len(pin) != 6:
+        return False
+
+    try:
+        salt, saved_digest = stored_hash.split("$", 1)
+
+        digest = hashlib.pbkdf2_hmac(
+            "sha256",
+            pin.encode(),
+            salt.encode(),
+            200000
+        ).hex()
+
+        return secrets.compare_digest(digest, saved_digest)
+
+    except Exception:
+        return False
 
 
 DEFAULT_SETTINGS = {
