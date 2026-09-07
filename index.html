@@ -238,47 +238,176 @@
       </div>
 
       <div class="professional-grid">
-        <form id="professionalForm" class="form-card dark-card">
-          <div class="grid-2">
-            <div>
-              <label for="proName">Emri / Biznesi</label>
-              <input id="proName" required placeholder="Auto Dori Service">
-            </div>
-            <div>
-              <label for="proPhone">WhatsApp</label>
-              <input id="proPhone" required placeholder="+355 6X XXX XXXX">
-            </div>
-          </div>
+       <form id="professionalForm" class="form-card dark-card">
 
-          <label for="proType">Lloji</label>
-          <select id="proType">
-            <option>Biznes</option>
-            <option>Profesionist individual</option>
-          </select>
+  <div class="grid-2">
 
-          <label>Kategoritë</label>
-          <div class="chips" id="professionalCategories">
-            <button type="button" class="chip active">Servis automjetesh</button>
-            <button type="button" class="chip">Pjesë këmbimi</button>
-            <button type="button" class="chip">Autoelektrik</button>
-            <button type="button" class="chip">Gomisteri</button>
-            <button type="button" class="chip">Hidraulik</button>
-            <button type="button" class="chip">Elektricist</button>
-          </div>
+    <div>
+      <label for="proName">Emri / Biznesi</label>
+      <input
+        id="proName"
+        required
+        placeholder="Auto Dori Service"
+      >
+    </div>
 
-          <div class="grid-2">
-            <div>
-              <label for="proCity">Qyteti</label>
-              <select id="proCity"><option>Tiranë</option><option>Durrës</option></select>
-            </div>
-            <div>
-              <label for="proZone">Zona</label>
-              <input id="proZone" placeholder="Zona që mbulon">
-            </div>
-          </div>
+    <div>
+      <label for="proPhone">Telefon / WhatsApp</label>
+      <input
+        id="proPhone"
+        required
+        type="tel"
+        placeholder="+355 6X XXX XXXX"
+      >
+    </div>
 
-          <button type="submit" class="btn btn-primary btn-large full">Regjistrohu falas</button>
-        </form>
+  </div>
+
+
+  <div class="grid-2">
+
+    <div>
+      <label for="proPin">PIN 6-shifror</label>
+      <input
+        id="proPin"
+        required
+        type="password"
+        inputmode="numeric"
+        minlength="6"
+        maxlength="6"
+        pattern="[0-9]{6}"
+        placeholder="••••••"
+        autocomplete="new-password"
+      >
+    </div>
+
+    <div>
+      <label for="proPinConfirm">Përsërit PIN-in</label>
+      <input
+        id="proPinConfirm"
+        required
+        type="password"
+        inputmode="numeric"
+        minlength="6"
+        maxlength="6"
+        pattern="[0-9]{6}"
+        placeholder="••••••"
+        autocomplete="new-password"
+      >
+    </div>
+
+  </div>
+
+
+  <label for="proType">Lloji</label>
+
+  <select id="proType">
+    <option value="business">Servis / Biznes</option>
+    <option value="individual">Profesionist individual</option>
+  </select>
+
+
+  <label>Kategoritë</label>
+
+  <div class="chips" id="professionalCategories">
+
+    <button
+      type="button"
+      class="chip active"
+      data-slug="riparime"
+    >
+      Servis automjetesh
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      data-slug="pjese-kembimi"
+    >
+      Pjesë këmbimi
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      data-slug="autoelektrik"
+    >
+      Autoelektrik
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      data-slug="gomisteri"
+    >
+      Gomisteri
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      data-slug="hidraulik"
+    >
+      Hidraulik
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      data-slug="elektricist"
+    >
+      Elektricist
+    </button>
+
+  </div>
+
+
+  <div class="grid-2">
+
+    <div>
+      <label for="proCity">Qyteti</label>
+
+      <select id="proCity" required>
+        <option value="Tiranë">Tiranë</option>
+        <option value="Durrës">Durrës</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="proZone">Zona</label>
+
+      <input
+        id="proZone"
+        placeholder="Zona që mbulon"
+      >
+    </div>
+
+  </div>
+
+
+  <label for="proDescription">Përshkrimi</label>
+
+  <textarea
+    id="proDescription"
+    rows="4"
+    placeholder="Përshkruaj shkurt biznesin dhe shërbimet që ofron..."
+  ></textarea>
+
+
+  <button
+    type="submit"
+    class="btn btn-primary btn-large full"
+  >
+    Regjistro biznesin
+  </button>
+
+
+  <div
+    id="professionalResult"
+    class="result-box hidden"
+  ></div>
+
+</form>
 
         <div class="pro-benefits">
           <div class="benefit"><span>01</span><div><h3>Kërkesat vijnë te ti</h3><p>WhatsApp automatik kur ka kërkesë të përshtatshme.</p></div></div>
